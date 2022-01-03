@@ -50,11 +50,7 @@ async def play(c: Client, m: Message):
                 InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
                 InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
             ],
-             [
-                    InlineKeyboardButton(
-                        "🕊.OWNER༒۝꧂", url=f"https://t.me/{OWNER_NAME}"
-                    )
-                ],
+            
         ]
     )
     if m.sender_chat:
