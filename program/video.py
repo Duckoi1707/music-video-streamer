@@ -62,14 +62,14 @@ async def vplay(c: Client, m: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+                InlineKeyboardButton(text="• Menu", callback_data="cbmenu"),
+                InlineKeyboardButton(text="• Đóng", callback_data="cls"),
             
                 ],
         ]
     )
     if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
+        return await m.reply_text("bạn là __Anonymous__ Admin! \n\ n »hoàn nguyên về tài khoản người dùng từ quyền quản trị.")
     try:
         aing = await c.get_me()
     except Exception as e:
@@ -77,7 +77,7 @@ async def vplay(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 Để sử dụng tôi, tôi cần phải là ** Quản trị viên ** với ** quyền sau**:\n\n» ❌ __Delete messages__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nDữ liệu được ** cập nhật ** tự động sau khi bạn ** quảng cáo cho tôi**"
         )
         return
     if not a.can_manage_voice_chats:
@@ -127,7 +127,7 @@ async def vplay(c: Client, m: Message):
 
     if replied:
         if replied.video or replied.document:
-            loser = await replied.reply("📥 **downloading video...**")
+            loser = await replied.reply("📥 **tải xuống video...**")
             dl = await replied.download()
             link = replied.link
             if len(m.command) < 2:
@@ -155,7 +155,7 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_1}",
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({link}) | `video`\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester} ",
+                    caption=f"💡 **Bản nhạc được thêm vào hàng đợi »** `{pos}`\n\n🏷 **Tên:** [{songname}]({link}) | `video`\n🎧 **Yêu cầu bởi:** {requester} ",
                     reply_markup=keyboard,
                 )
             else:
@@ -165,7 +165,7 @@ async def vplay(c: Client, m: Message):
                     amaze = MediumQualityVideo()
                 elif Q == 360:
                     amaze = LowQualityVideo()
-                await loser.edit("🔄 **Joining vc...**")
+                await loser.edit("🔄 **Tham gia vc...**")
                 await call_py.join_group_call(
                     chat_id,
                     AudioVideoPiped(
@@ -180,22 +180,22 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_2}",
-                    caption=f"🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
+                    caption=f"🏷 **Tên:** [{songname}]({link})\n💡 **Trạng Thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}\n📹 **Loại luồng:** `Video`",
                     reply_markup=keyboard,
                 )
         else:
             if len(m.command) < 2:
                 await m.reply(
-                    "» reply to an **video file** or **give something to search.**"
+                    "» trả lời một ** tệp video ** hoặc ** đưa ra một cái gì đó để tìm kiếm.**"
                 )
             else:
-                loser = await c.send_message(chat_id, "🔍 **Searching...**")
+                loser = await c.send_message(chat_id, "🔍 **Đang tìm kiếm...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 Q = 720
                 amaze = HighQualityVideo()
                 if search == 0:
-                    await loser.edit("❌ **no results found.**")
+                    await loser.edit("❌ **không tim được kết quả.**")
                 else:
                     songname = search[0]
                     url = search[1]
@@ -203,7 +203,7 @@ async def vplay(c: Client, m: Message):
                     thumbnail = search[3]
                     veez, ytlink = await ytdl(url)
                     if veez == 0:
-                        await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
+                        await loser.edit(f"❌ vấn đề yt-dl được phát hiện\n\n» `{ytlink}`")
                     else:
                         if chat_id in QUEUE:
                             pos = add_to_queue(
@@ -213,12 +213,12 @@ async def vplay(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=thumbnail,
-                                caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
+                                caption=f"💡 **Bản nhạc được thêm vào hàng đợi »** `{pos}`\n\n🏷 **Tên:** [{songname}]({url}) | `video`\n⏱ **Thời lượng:** `{duration}`\n🎧 **Yêu cầu bởi:** {requester}",
                                 reply_markup=keyboard,
                             )
                         else:
                             try:
-                                await loser.edit("🔄 **Joining vc...**")
+                                await loser.edit("🔄 **Tham gia vc...**")
                                 await call_py.join_group_call(
                                     chat_id,
                                     AudioVideoPiped(
@@ -233,7 +233,7 @@ async def vplay(c: Client, m: Message):
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
                                     photo=thumbnail,
-                                    caption=f"🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
+                                    caption=f"🏷 **Tên:** [{songname}]({url})\n⏱ **Thời lượng:** `{duration}`\n💡 **Trạng thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}\n📹 **Loại luồng:** `Video`",
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
@@ -243,16 +243,16 @@ async def vplay(c: Client, m: Message):
     else:
         if len(m.command) < 2:
             await m.reply(
-                "» reply to an **video file** or **give something to search.**"
+                "» trả lời một ** tệp video ** hoặc ** đưa ra một cái gì đó để tìm kiếm.**"
             )
         else:
-            loser = await c.send_message(chat_id, "🔍 **Searching...**")
+            loser = await c.send_message(chat_id, "🔍 **Đang tìm kiếm...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             Q = 720
             amaze = HighQualityVideo()
             if search == 0:
-                await loser.edit("❌ **no results found.**")
+                await loser.edit("❌ **không tim được kêt quả.**")
             else:
                 songname = search[0]
                 url = search[1]
@@ -260,7 +260,7 @@ async def vplay(c: Client, m: Message):
                 thumbnail = search[3]
                 veez, ytlink = await ytdl(url)
                 if veez == 0:
-                    await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
+                    await loser.edit(f"❌ vấn đề yt-dl được phát hiện\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
@@ -270,12 +270,12 @@ async def vplay(c: Client, m: Message):
                         )
                         await m.reply_photo(
                             photo=thumbnail,
-                            caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
+                            caption=f"💡 **Bản nhạc được thêm vào hàng đợi »** `{pos}`\n\n🏷 **Tên:** [{songname}]({url}) | `video`\n⏱ **Khoảng thời gian:** `{duration}`\n🎧 **Yêu cầu bởi:** {requester}",
                             reply_markup=keyboard,
                         )
                     else:
                         try:
-                            await loser.edit("🔄 **Joining vc...**")
+                            await loser.edit("🔄 **Tham gia vc...**")
                             await call_py.join_group_call(
                                 chat_id,
                                 AudioVideoPiped(
@@ -290,7 +290,7 @@ async def vplay(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=thumbnail,
-                                caption=f"🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
+                                caption=f"🏷 **Tên:** [{songname}]({url})\n⏱ **Thời lượng:** `{duration}`\n💡 **Trạng thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}\n📹 **Loại luồng:** `Video`",
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
@@ -305,18 +305,18 @@ async def vstream(c: Client, m: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+                InlineKeyboardButton(text="• Menu", callback_data="cbmenu"),
+                InlineKeyboardButton(text="• Đóng", callback_data="cls"),
             ],
             [
                     InlineKeyboardButton(
-                        "🕊.OWNER༒۝꧂", url=f"https://t.me/{OWNER_NAME}"
+                        "OGGY", url=f"https://t.me/OGGYVN"
                     )
                 ],
         ]
     )
     if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
+        return await m.reply_text("bạn là __Anonymous__ Admin! \n\n »hoàn nguyên về tài khoản người dùng từ quyền quản trị.")
     try:
         aing = await c.get_me()
     except Exception as e:
@@ -324,7 +324,7 @@ async def vstream(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 Để sử dụng tôi, tôi cần phải là ** Quản trị viên ** với ** quyền sau**:\n\n» ❌ __Delete messages__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nData is **được cập nhật ** tự động sau khi bạn ** thăng chức cho tôi**"
         )
         return
     if not a.can_manage_voice_chats:
@@ -373,12 +373,12 @@ async def vstream(c: Client, m: Message):
                 )
 
     if len(m.command) < 2:
-        await m.reply("» give me a live-link/m3u8 url/youtube link to stream.")
+        await m.reply("» cho tôi một liên kết trực tiếp / m3u8 url / liên kết youtube để phát trực tiếp.")
     else:
         if len(m.command) == 2:
             link = m.text.split(None, 1)[1]
             Q = 720
-            loser = await c.send_message(chat_id, "🔄 **processing stream...**")
+            loser = await c.send_message(chat_id, "🔄 **luồng xử lý...**")
         elif len(m.command) == 3:
             op = m.text.split(None, 1)[1]
             link = op.split(None, 1)[0]
@@ -390,7 +390,7 @@ async def vstream(c: Client, m: Message):
                 await m.reply(
                     "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
                 )
-            loser = await c.send_message(chat_id, "🔄 **processing stream...**")
+            loser = await c.send_message(chat_id, "🔄 **luồng xử lý...**")
         else:
             await m.reply("**/vstream {link} {720/480/360}**")
 
@@ -411,7 +411,7 @@ async def vstream(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_1}",
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}",
+                    caption=f"💡 **Theo dõi được thêm vào hàng đợi »** `{pos}`\n\n🎧 **Yêu cầu bởi:** {requester}",
                     reply_markup=keyboard,
                 )
             else:
@@ -422,7 +422,7 @@ async def vstream(c: Client, m: Message):
                 elif Q == 360:
                     amaze = LowQualityVideo()
                 try:
-                    await loser.edit("🔄 **Joining vc...**")
+                    await loser.edit("🔄 **Tham gia vc...**")
                     await call_py.join_group_call(
                         chat_id,
                         AudioVideoPiped(
@@ -439,7 +439,7 @@ async def vstream(c: Client, m: Message):
                     )
                     await m.reply_photo(
                         photo=f"{IMG_2}",
-                        caption=f"💡 **[Video live]({link}) stream started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}",
+                        caption=f"💡 **[Video trực tiếp]({link}) luồng bắt đầu.**\n\n💡 **Trạng thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}",
                         reply_markup=keyboard,
                     )
                 except Exception as ep:
