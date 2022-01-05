@@ -15,7 +15,7 @@ from pyrogram.types import (
 
 
 bttn = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("🔙 Go Back", callback_data="cbmenu")]]
+    [[InlineKeyboardButton("🔙 Quay lại", callback_data="cbmenu")]]
 )
 
 
@@ -24,7 +24,7 @@ bcl = InlineKeyboardMarkup(
 )
 
 
-@Client.on_message(command(["reload", f"reload@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["tailaibot", f"tailaibot@{BOT_USERNAME}"]) & other_filters)
 @authorized_users_only
 async def update_admin(client, message):
     global admins
@@ -34,11 +34,11 @@ async def update_admin(client, message):
         new_admins.append(u.user.id)
     admins[message.chat.id] = new_admins
     await message.reply_text(
-        "✅ Bot **reloaded correctly !**\n✅ **Admin list** has **updated !**"
+        "✅ Bot **tải lại một cách chính xác !**\n✅ ** Danh sách quản trị viên ** đã ** cập nhật !**"
     )
 
 
-@Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
+@Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "boqua"]) & other_filters)
 @authorized_users_only
 async def skip(client, m: Message):
 
@@ -59,15 +59,15 @@ async def skip(client, m: Message):
     if len(m.command) < 2:
         op = await skip_current_song(chat_id)
         if op == 0:
-            await m.reply("❌ nothing is currently playing")
+            await m.reply("❌ không có gì hiện đang chơi")
         elif op == 1:
-            await m.reply("✅ __Queues__ **is empty.**\n\n**• userbot leaving voice chat**")
+            await m.reply("✅ __Hàng đợi__ ** trống.**\n\n**• userbot rời khỏi cuộc trò chuyện thoại**")
         elif op == 2:
-            await m.reply("🗑️ **Clearing the Queues**\n\n**• userbot leaving voice chat**")
+            await m.reply("🗑️ **Xóa hàng đợi**\n\n**• userbot rời khỏi cuộc trò chuyện thoại**")
         else:
             await m.reply_photo(
                 photo=f"{IMG_3}",
-                caption=f"⏭ **Skipped to the next track.**\n\n🏷 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
+                caption=f"⏭ **Đã bỏ qua bài hát tiếp theo.**\n\n🏷 **Tên:** [{op[0]}]({op[1]})\n💡 **Trạng thái:** `Playing`\n🎧 **Yêu cầu bởi:** {m.from_user.mention()}",
                 reply_markup=keyboard,
             )
     else:
@@ -89,7 +89,7 @@ async def skip(client, m: Message):
 
 
 @Client.on_message(
-    command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}", "vstop"])
+    command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}", "tat"])
     & other_filters
 )
 @authorized_users_only
@@ -99,15 +99,15 @@ async def stop(client, m: Message):
         try:
             await call_py.leave_group_call(chat_id)
             clear_queue(chat_id)
-            await m.reply("✅ The userbot has disconnected from the video chat.")
+            await m.reply("✅ Người dùng đã ngắt kết nối khỏi cuộc trò chuyện video.")
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing is streaming**")
+        await m.reply("❌ **không có gì đang phát trực tuyến**")
 
 
 @Client.on_message(
-    command(["pause", f"pause@{BOT_USERNAME}", "vpause"]) & other_filters
+    command(["pause", f"pause@{BOT_USERNAME}", "tamdung"]) & other_filters
 )
 @authorized_users_only
 async def pause(client, m: Message):
@@ -116,7 +116,7 @@ async def pause(client, m: Message):
         try:
             await call_py.pause_stream(chat_id)
             await m.reply(
-                "⏸ **Track paused.**\n\n• **To resume the stream, use the**\n» /resume command."
+                "⏸ **Theo dõi bị tạm dừng.**\n\n• ** Để tiếp tục luồng, hãy sử dụng**\n» /tiếp tục lệnh."
             )
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
@@ -125,7 +125,7 @@ async def pause(client, m: Message):
 
 
 @Client.on_message(
-    command(["resume", f"resume@{BOT_USERNAME}", "vresume"]) & other_filters
+    command(["resume", f"resume@{BOT_USERNAME}", "tieptuc"]) & other_filters
 )
 @authorized_users_only
 async def resume(client, m: Message):
@@ -134,16 +134,16 @@ async def resume(client, m: Message):
         try:
             await call_py.resume_stream(chat_id)
             await m.reply(
-                "▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command."
+                "▶️ **Đã tiếp tục theo dõi.**\n\n• **Để tạm dừng luồng, hãy sử dụng**\n» /lệnh tạm dừng."
             )
         except Exception as e:
-            await m.reply(f"🚫 **error:**\n\n`{e}`")
+            await m.reply(f"🚫 **lỗi:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **không có gì trong phát trực tuyến**")
 
 
 @Client.on_message(
-    command(["mute", f"mute@{BOT_USERNAME}", "vmute"]) & other_filters
+    command(["mmute", f"mmute@{BOT_USERNAME}", "vcmute"]) & other_filters
 )
 @authorized_users_only
 async def mute(client, m: Message):
@@ -152,16 +152,16 @@ async def mute(client, m: Message):
         try:
             await call_py.mute_stream(chat_id)
             await m.reply(
-                "🔇 **Userbot muted.**\n\n• **To unmute the userbot, use the**\n» /unmute command."
+                "🔇 **Userbot bị tắt tiếng.**\n\n• **Để bật tiếng người dùng, hãy sử dụng**\n» /bật tiếng lệnh."
             )
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **không có gì trong phát trực tuyến**")
 
 
 @Client.on_message(
-    command(["unmute", f"unmute@{BOT_USERNAME}", "vunmute"]) & other_filters
+    command(["munmute", f"munmute@{BOT_USERNAME}", "vcunmute"]) & other_filters
 )
 @authorized_users_only
 async def unmute(client, m: Message):
@@ -170,115 +170,115 @@ async def unmute(client, m: Message):
         try:
             await call_py.unmute_stream(chat_id)
             await m.reply(
-                "🔊 **Userbot unmuted.**\n\n• **To mute the userbot, use the**\n» /mute command."
+                "🔊 **Người dùng đã bật tiếng.**\n\n• **Để tắt tiếng userbot, hãy sử dụng**\n» /lệnh tắt tiếng."
             )
         except Exception as e:
-            await m.reply(f"🚫 **error:**\n\n`{e}`")
+            await m.reply(f"🚫 **lỗi:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **không có gì trong phát trực tuyến**")
 
 
 @Client.on_callback_query(filters.regex("cbpause"))
 async def cbpause(_, query: CallbackQuery):
     if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
+        return await query.answer("bạn là Quản trị viên Ẩn danh! \n \n »hoàn nguyên về tài khoản người dùng từ quyền quản trị viên.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 chỉ quản trị viên có quyền quản lý cuộc trò chuyện thoại mới có thể nhấn vào nút này !", show_alert=True)
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.pause_stream(chat_id)
             await query.edit_message_text(
-                "⏸ the streaming has paused", reply_markup=bttn
+                "⏸ phát trực tuyến đã tạm dừng", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
+        await query.answer("❌ hiện không có gì đang phát trực tuyến", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbresume"))
 async def cbresume(_, query: CallbackQuery):
     if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
+        return await query.answer("bạn là Quản trị viên Ẩn danh! \n \n »hoàn nguyên về tài khoản người dùng từ quyền quản trị viên.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 chỉ quản trị viên có quyền quản lý cuộc trò chuyện thoại mới có thể nhấn vào nút này !", show_alert=True)
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.resume_stream(chat_id)
             await query.edit_message_text(
-                "▶️ the streaming has resumed", reply_markup=bttn
+                "▶️ phát trực tuyến đã tiếp tục", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
+        await query.answer("❌hiện không có gì đang phát trực tuyến", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbstop"))
 async def cbstop(_, query: CallbackQuery):
     if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
+        return await query.answer("bạn là Quản trị viên Ẩn danh! \n \n »hoàn nguyên về tài khoản người dùng từ quyền quản trị viên.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 chỉ quản trị viên có quyền quản lý cuộc trò chuyện thoại mới có thể nhấn vào nút này !", show_alert=True)
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.leave_group_call(chat_id)
             clear_queue(chat_id)
-            await query.edit_message_text("✅ **this streaming has ended**", reply_markup=bcl)
+            await query.edit_message_text("✅ **luồng này đã kết thúc**", reply_markup=bcl)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
+        await query.answer("❌ hiện không có gì đang phát trực tuyến", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbmute"))
 async def cbmute(_, query: CallbackQuery):
     if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
+        return await query.answer("bạn là Quản trị viên Ẩn danh! \n \n »hoàn nguyên về tài khoản người dùng từ quyền quản trị viên.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 chỉ quản trị viên có quyền quản lý cuộc trò chuyện thoại mới có thể nhấn vào nút này !", show_alert=True)
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.mute_stream(chat_id)
             await query.edit_message_text(
-                "🔇 userbot succesfully muted", reply_markup=bttn
+                "🔇 userbot bị tắt tiếng thành công", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
+        await query.answer("❌ hiện không có gì đang phát trực tuyến", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbunmute"))
 async def cbunmute(_, query: CallbackQuery):
     if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
+        return await query.answer("bạn là Quản trị viên Ẩn danh! \n \n »hoàn nguyên về tài khoản người dùng từ quyền quản trị viên.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 chỉ quản trị viên có quyền quản lý cuộc trò chuyện thoại mới có thể nhấn vào nút này !", show_alert=True)
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.unmute_stream(chat_id)
             await query.edit_message_text(
-                "🔊 userbot succesfully unmuted", reply_markup=bttn
+                "🔊 userbot được bật tiếng thành công", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
+        await query.answer("❌ hiện không có gì đang phát trực tuyến", show_alert=True)
 
 
 @Client.on_message(
-    command(["volume", f"volume@{BOT_USERNAME}", "vol"]) & other_filters
+    command(["volume", f"volume@{BOT_USERNAME}", "amthanh"]) & other_filters
 )
 @authorized_users_only
 async def change_volume(client, m: Message):
@@ -288,9 +288,9 @@ async def change_volume(client, m: Message):
         try:
             await call_py.change_volume_call(chat_id, volume=int(range))
             await m.reply(
-                f"✅ **volume set to** `{range}`%"
+                f"✅ **âm lượng được đặt thành** `{range}`%"
             )
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **không có gì trong phát trực tuyến**")
