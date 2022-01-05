@@ -54,7 +54,7 @@ async def play(c: Client, m: Message):
         ]
     )
     if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
+        return await m.reply_text("bạn là __Anonymous__ Admin !\n\n» hoàn nguyên về tài khoản người dùng từ quyền quản trị.")
     try:
         aing = await c.get_me()
     except Exception as e:
@@ -62,7 +62,7 @@ async def play(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 Để sử dụng tôi, tôi cần phải là ** Quản trị viên ** với ** quyền ** sau:\n\n» ❌ __Xóa tin nhắn__\n» ❌ __Thêm người dùng__\n» ❌ __Quản lý trò chuyện video__\n\nDữ liệu được ** cập nhật ** tự động sau khi bạn ** quảng cáo cho tôi**"
         )
         return
     if not a.can_manage_voice_chats:
@@ -111,7 +111,7 @@ async def play(c: Client, m: Message):
                 )
     if replied:
         if replied.audio or replied.voice:
-            suhu = await replied.reply("📥 **downloading audio...**")
+            suhu = await replied.reply("📥 **tải xuống âm thanh...**")
             dl = await replied.download()
             link = replied.link
             if replied.audio:
@@ -129,7 +129,7 @@ async def play(c: Client, m: Message):
                 await suhu.delete()
                 await m.reply_photo(
                     photo=f"{IMG_1}",
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}",
+                    caption=f"💡 **Bản nhạc được thêm vào hàng đợi »** `{pos}`\n\n🏷 **Tên:** [{songname}]({link}) | `music`\n🎧 **Yêu cầu bởi:** {m.from_user.mention()}",
                     reply_markup=keyboard,
                 )
             else:
@@ -147,7 +147,7 @@ async def play(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_2}",
-                    caption=f"🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Music`",
+                    caption=f"🏷 **Tên:** [{songname}]({link})\n💡 **Trạng thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}\n📹 **Loại luồng:** `Music`",
                     reply_markup=keyboard,
                 )
              except Exception as e:
@@ -156,14 +156,14 @@ async def play(c: Client, m: Message):
         else:
             if len(m.command) < 2:
                 await m.reply(
-                    "» reply to an **audio file** or **give something to search.**"
+                    "» trả lời một ** tệp âm thanh ** hoặc ** đưa ra một cái gì đó để tìm kiếm.**"
                 )
             else:
-                suhu = await c.send_message(chat_id, "🔍 **Searching...**")
+                suhu = await c.send_message(chat_id, "🔍 **trả lời một ** tệp âm thanh ** hoặc ** đưa ra một cái gì đó để tìm kiếm..**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 if search == 0:
-                    await suhu.edit("❌ **no results found.**")
+                    await suhu.edit("❌ **không tim được kêt quả.**")
                 else:
                     songname = search[0]
                     url = search[1]
@@ -172,7 +172,7 @@ async def play(c: Client, m: Message):
                     format = "bestaudio[ext=m4a]"
                     veez, ytlink = await ytdl(format, url)
                     if veez == 0:
-                        await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
+                        await suhu.edit(f"❌ vấn đề yt-dl được phát hiện\n\n» `{ytlink}`")
                     else:
                         if chat_id in QUEUE:
                             pos = add_to_queue(
@@ -182,12 +182,12 @@ async def play(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=thumbnail,
-                                caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🎧 **Request by:** {requester})",
+                                caption=f"💡 **Bản nhạc được thêm vào hàng đợi »** `{pos}`\n\n🏷 **Tên:** [{songname}]({url}) | `music`\n**⏱ Khoảng thời gian:** `{duration}`\n🎧 **Yêu cầu bởi:** {requester})",
                                 reply_markup=keyboard,
                             )
                         else:
                             try:
-                                await suhu.edit("🔄 **Joining vc...**")
+                                await suhu.edit("🔄 **Tham gia vc...**")
                                 await call_py.join_group_call(
                                     chat_id,
                                     AudioPiped(
@@ -200,7 +200,7 @@ async def play(c: Client, m: Message):
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
                                     photo=thumbnail,
-                                    caption=f"🏷 **Name:** [{songname}]({url})\n**⏱ Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Music`",
+                                    caption=f"🏷 **Tên:** [{songname}]({url})\n**⏱ Khoảng thời gian:** `{duration}`\n💡 **Trạng thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}\n📹 **Loại luồng:** `Music`",
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
@@ -210,10 +210,10 @@ async def play(c: Client, m: Message):
     else:
         if len(m.command) < 2:
             await m.reply(
-                "» reply to an **audio file** or **give something to search.**"
+                "» trả lời một ** tệp âm thanh ** hoặc ** đưa ra một cái gì đó để tìm kiếm.**"
             )
         else:
-            suhu = await c.send_message(chat_id, "🔍 **Searching...**")
+            suhu = await c.send_message(chat_id, "🔍 **Đang tìm kiếm...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             if search == 0:
@@ -226,7 +226,7 @@ async def play(c: Client, m: Message):
                 format = "bestaudio[ext=m4a]"
                 veez, ytlink = await ytdl(format, url)
                 if veez == 0:
-                    await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
+                    await suhu.edit(f"❌ vấn đề yt-dl được phát hiện\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
@@ -236,12 +236,12 @@ async def play(c: Client, m: Message):
                         )
                         await m.reply_photo(
                             photo=thumbnail,
-                            caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🎧 **Request by:** {requester}",
+                            caption=f"💡 **Bản nhạc được thêm vào hàng đợi »** `{pos}`\n\n🏷 **Tên:** [{songname}]({url}) | `music`\n**⏱ Khoảng thời gian:** `{duration}`\n🎧 **Yêu cầu bởi:** {requester}",
                             reply_markup=keyboard,
                         )
                     else:
                         try:
-                            await suhu.edit("🔄 **Joining vc...**")
+                            await suhu.edit("🔄 **Tham gia vc...**")
                             await call_py.join_group_call(
                                 chat_id,
                                 AudioPiped(
@@ -254,9 +254,9 @@ async def play(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=thumbnail,
-                                caption=f"🏷 **Name:** [{songname}]({url})\n**⏱ Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Music`",
+                                caption=f"🏷 **Tên:** [{songname}]({url})\n**⏱ Thời lượng:** `{duration}`\n💡 **Trạng Thái:** `Playing`\n🎧 **Yêu cầu bởi:** {requester}\n📹 **Loại luồng:** `Music`",
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
                             await suhu.delete()
-                            await m.reply_text(f"🚫 error: `{ep}`")
+                            await m.reply_text(f"🚫 lỗi: `{ep}`")
